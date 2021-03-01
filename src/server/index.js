@@ -1,12 +1,19 @@
 const express = require('express');
-const helmet = require('helmet');
 const app = express();
+const helmet = require('helmet');
+const userRouter = require('./routers/user');
 const PORT = process.env.PORT || 3000;
 
 // connect to db
 require('../db/db');
 
-app.use(helmet);
+// configure express
+app.use(helmet());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+// set routers
+app.use(userRouter);
 
 
 app.listen(PORT, () => {
