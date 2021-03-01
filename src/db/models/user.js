@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 
 const schema = new mongoose.Schema({
   email: {
@@ -17,8 +18,43 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+  },
+  token: {
+    type: String, 
+    required: true
   }
 });
+
+schema.statics.findByCredential = async (email, password) => {
+  const user = await User.findOne({email});
+
+  if(!user){
+    throw new Error("Unable to find user");
+  }
+
+  // We check if the passwords are the same
+  const isMatch = await bcrypt.compare(password, user.password);
+  if(!isMatch){
+    throw new Error("Password is incorrect");
+  }
+
+  return user;
+}
+
+schema.methods.generateJWT = async function() {
+  const user = this;
+
+  const payload = {
+    id: user._id.toString(),
+    date: Date.now().toString()
+  };
+
+  const token = jwt.sign(payload, process.env.SECRETKEY, {algorithm: "HS256"});
+  user.token = token;
+  await user.save();
+  
+  return token;
+}
 
 schema.pre('save', async function(next){
   const user = this;
