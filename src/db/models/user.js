@@ -18,10 +18,6 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-  },
-  token: {
-    type: String, 
-    required: true
   }
 });
 
@@ -41,7 +37,7 @@ schema.statics.findByCredential = async (email, password) => {
   return user;
 }
 
-schema.methods.generateJWT = async function() {
+schema.methods.generateJWT = function() {
   const user = this;
 
   const payload = {
@@ -50,10 +46,17 @@ schema.methods.generateJWT = async function() {
   };
 
   const token = jwt.sign(payload, process.env.SECRETKEY, {algorithm: "HS256"});
-  user.token = token;
-  await user.save();
   
   return token;
+}
+
+schema.methods.toJson = function(){
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+
+  return userObject;
 }
 
 schema.pre('save', async function(next){
