@@ -4,6 +4,7 @@ const app = express();
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routers/user');
+const todoRouter = require('./routers/todo');
 const PORT = process.env.PORT || 3000;
 
 // connect to db
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 // set routers
 app.use(userRouter);
+app.use(todoRouter);
 
 
 app.listen(PORT, () => {

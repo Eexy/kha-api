@@ -21,3 +21,5 @@ const schema = new mongoose.Schema({
 schema.virtual
 
 const Todo = mongoose.model('Todo', schema);
+
+module.exports = Todo;

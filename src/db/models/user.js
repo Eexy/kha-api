@@ -21,7 +21,7 @@ const schema = new mongoose.Schema({
   }
 });
 
-schema.virtual('task', {
+schema.virtual('todos', {
   ref: 'Todo',
   localField: '_id',
   foreignField: 'owner'
