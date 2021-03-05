@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require('../middlewares/auth');
 const router = express.Router();
 const User = require("../../db/models/user");
+const sendSignupEmail = require('../utils/email');
 
 router.post("/users/login", async (req, res) => {
   try{
@@ -40,6 +41,7 @@ router.post("/users/signup", async (req, res) => {
     user = new User(req.body);
     const token = user.generateJWT();
     await user.save();
+    sendSignupEmail(req.body.email)
     res.cookie('jwt', token, {httpOnly: true});
     return res.status(201).send({ message: "account succesfully created" });
   }

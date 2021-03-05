@@ -74,7 +74,7 @@ router.patch("/todo/:id", auth, async (req, res) => {
 
   await todo.save();
 
-  res.send(todo);
+  res.status(204).send(todo);
 });
 
 module.exports = router;
