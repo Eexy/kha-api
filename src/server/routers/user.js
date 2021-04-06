@@ -37,6 +37,7 @@ router.delete("/users/me", auth, async (req, res) => {
 
   try{
     await req.user.remove();
+    sendCancelationEmail(req.body.email);
     return res.status(201).send({message: "user succesfully deleted"});
   } catch (e){
     res.status(500).send(e.message);

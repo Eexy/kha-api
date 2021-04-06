@@ -28,6 +28,7 @@ schema.virtual('todos', {
   foreignField: 'owner'
 });
 
+// Find an user with hes password and email
 schema.statics.findByCredential = async (email, password) => {
   const user = await User.findOne({email});
 
@@ -44,6 +45,7 @@ schema.statics.findByCredential = async (email, password) => {
   return user;
 }
 
+// Generate a JWT 
 schema.methods.generateJWT = function() {
   const user = this;
 
@@ -57,6 +59,7 @@ schema.methods.generateJWT = function() {
   return token;
 }
 
+// Send back an user in JSON
 schema.methods.toJson = function(){
   const user = this;
   const userObject = user.toObject();
@@ -66,6 +69,7 @@ schema.methods.toJson = function(){
   return userObject;
 }
 
+// Encrypt user password
 schema.pre('save', async function(next){
   const user = this;
   
@@ -76,6 +80,7 @@ schema.pre('save', async function(next){
   next();
 });
 
+// Remove user's todos when user is remove
 schema.pre('remove', async function(next){
   const user = this;
 

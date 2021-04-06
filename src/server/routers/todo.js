@@ -1,7 +1,6 @@
 const express = require("express");
 const auth = require("../middlewares/auth");
 const Todo = require("../../db/models/todo");
-const User = require("../../db/models/user");
 const router = express.Router();
 
 // GET /tasks?completed=true
