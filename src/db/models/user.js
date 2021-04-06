@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
+const Todo = require('./todo');
 
 const schema = new mongoose.Schema({
   email: {
@@ -74,6 +75,14 @@ schema.pre('save', async function(next){
 
   next();
 });
+
+schema.pre('remove', async function(next){
+  const user = this;
+
+  await Todo.deleteMany({owner: user._id});
+
+  next();
+})
 
 const User = mongoose.model('User', schema);
 
