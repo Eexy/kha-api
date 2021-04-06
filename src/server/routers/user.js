@@ -2,7 +2,7 @@ const express = require("express");
 const auth = require('../middlewares/auth');
 const router = express.Router();
 const User = require("../../db/models/user");
-const sendSignupEmail = require('../utils/email');
+const {sendSignupEmail, sendCancelationEmail} = require('../utils/email');
 
 router.post("/users/login", async (req, res) => {
   try{
@@ -31,6 +31,17 @@ router.get("/users/logout", auth, async (req, res) => {
   // we clear browser'cookies
   res.clearCookie('jwt');
   res.status(200).send({message: 'Logout successfully'});
+});
+
+router.delete("/users/me", auth, async (req, res) => {
+
+  try{
+    await req.user.remove();
+    return res.status(201).send({message: "user succesfully deleted"});
+  } catch (e){
+    res.status(500).send(e.message);
+  }
+  
 });
 
 router.post("/users/signup", async (req, res) => {
