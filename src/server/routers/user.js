@@ -53,8 +53,7 @@ router.post("/users/signup", async (req, res) => {
     const token = user.generateJWT();
     await user.save();
     sendSignupEmail(req.body.email)
-    res.cookie('jwt', token, {httpOnly: true});
-    return res.status(201).send({ message: "account succesfully created" });
+    return res.status(201).send({ token });
   }
 
   res.status(409).send({ error: "email address is already used" });

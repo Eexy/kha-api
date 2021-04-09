@@ -54,7 +54,7 @@ schema.methods.generateJWT = function() {
     date: Date.now().toString()
   };
 
-  const token = jwt.sign(payload, process.env.SECRETKEY, {algorithm: "HS256"});
+  const token = jwt.sign(payload, process.env.SECRETKEY, {algorithm: "HS256", expiresIn: '15m'});
   
   return token;
 }
