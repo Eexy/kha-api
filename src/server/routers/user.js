@@ -8,8 +8,7 @@ router.post("/users/login", async (req, res) => {
   try{
     const user = await User.findByCredential(req.body.email, req.body.password);
     const token = await user.generateJWT();
-    res.cookie('jwt', token, {httpOnly: true});
-    res.status(200).send({message: "login successful"});
+    res.status(200).send({token});
   } catch(e){
     res.status(404).send({error: e.message});
   }
@@ -53,8 +52,7 @@ router.post("/users/signup", async (req, res) => {
     const token = user.generateJWT();
     await user.save();
     sendSignupEmail(req.body.email)
-    res.cookie('jwt', token, {httpOnly: true});
-    return res.status(201).send({ message: "account succesfully created" });
+    return res.status(201).send({ token });
   }
 
   res.status(409).send({ error: "email address is already used" });

@@ -3,8 +3,8 @@ const User = require('../../db/models/user');
 
 async function auth(req, res, next){
   try{
-    const jwtCookie = req.cookies.jwt;
-    const decodedJWT =  jwt.verify(jwtCookie, process.env.SECRETKEY);
+    const token = req.header('Authorization').replace('Bearer ', '')
+    const decodedJWT =  jwt.verify(token, process.env.SECRETKEY);
   
     const user = await User.findOne({_id: decodedJWT.id});
     req.user = user;
