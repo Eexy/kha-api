@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const userRouter = require('./routers/user');
 const todoRouter = require('./routers/todo');
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ require('../db/db');
 // configure express
 app.use(helmet());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
