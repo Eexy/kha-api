@@ -20,6 +20,9 @@ app.use(cookieParser());
 app.use(userRouter);
 app.use(todoRouter);
 
+app.get('*', (req, res) => {
+  res.send({error: "incorrect url"});
+});
 
 app.listen(PORT, () => {
   console.log(`listening on port: ${PORT}`);
