@@ -89,13 +89,17 @@ router.patch("/todo/:id", auth, async (req, res) => {
 
   const todo = await Todo.findOne({ _id: req.params.id, owner: req.user._id });
 
+  if(todo === null){
+    return res.send({error: "todo doesn't exist"});
+  }
+
   updatesKeys.forEach((key) => {
     todo[key] = updates[key];
   });
 
   await todo.save();
 
-  res.status(204).send(todo);
+  res.send(todo);
 });
 
 module.exports = router;
