@@ -18,6 +18,9 @@
   "name": "kha-api",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "15.4.0"
+  },
   "scripts": {
     "start": "node --trace-warnings ./src/server/index.js",
     "test": "nodemon ./src/server/index.js"
